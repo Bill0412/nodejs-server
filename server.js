@@ -9,6 +9,6 @@ http.createServer((request, response) => {
   console.log(request.url);
   response.writeHead(200, {'Content-Type': 'text/html'});
   var myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
-  myReadStream.pipe(myReadStream);
+  myReadStream.pipe(response);
 }).listen(port, server);
 console.log('Server is now running at' + server + ':' + port);
