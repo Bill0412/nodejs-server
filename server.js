@@ -2,6 +2,7 @@ const http = require('http')
 const fs = require('fs')
 
 const port = 2222
+const server = '0.0.0.0'
 http.createServer((request, response) => {
   console.log(request.headers)
   console.log(request.method)
@@ -28,4 +29,4 @@ http.createServer((request, response) => {
     response.writeHead(200, {'Content-Type': 'text/plain'})
     response.end('Hello World\n')
   }
-}).listen(port)
+}).listen(port, server)
