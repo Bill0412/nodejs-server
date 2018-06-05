@@ -5,6 +5,11 @@
   </head>
   <body>
     <h1>Welcome here, this is where our team will flourish.</h1>
-    <a href="http://thecatapi.com"><img src="http://thecatapi.com/api/images/get?format=src&type=gif"></a>
+    <h2>This is the documentation for our ARM API</h2>
+    <a href="http://thecatapi.com"><img alt="random-kitty-photo" src="http://thecatapi.com/api/images/get?format=src&type=gif"></a>
+    <p> To use the api, following are samples: (You can try it out in Shell)</p>
+    <p>curl -d '{"signal":"1"}' -H "Content-Type: application/json" -X POST 35.185.172.243:2222</p>
+    <p>curl -d '{"signal":"Hello"}' -H "Content-Type: application/json" -X POST 35.185.172.243:2222</p>
+    <p>As shown above, you only need to modify the signal attribute in the JSON text.</p>
   </body>
 </html>
