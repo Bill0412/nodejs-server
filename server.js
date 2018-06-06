@@ -16,10 +16,7 @@ http.createServer((request, response) => {
     let buff = ''
     request.on('data', function (chunk) {
       buff += chunk
-      if(chunk != undefined){
-        obj = JSON.parse(chunk)
-        response.write(`\nSignal Received: ${obj.signal}`)
-      }
+      response.write(`\nSignal Received: ${chunk}`)
     })
     request.on('end', function () {
       console.log(`Body: ${buff}`)
