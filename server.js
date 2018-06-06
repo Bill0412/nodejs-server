@@ -2,7 +2,7 @@ const http = require('http')
 const fs = require('fs')
 
 const port = 2222
-const server = '0.0.0.0'
+const server = '127.0.0.1'
 http.createServer((request, response) => {
   console.log(request.headers)
   console.log(request.method)
