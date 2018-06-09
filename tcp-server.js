@@ -42,7 +42,7 @@ server.on('connection', (socket) => {
         console.log('The client door is closed after transaction')
         socket.write("Transaction recorded in database.\r")
         isReady = false
-        transaction.do = true
+        transact.do = true
       }
     }
 
@@ -86,15 +86,18 @@ server.listen({
   exclusive: true
 })
 
-console.log('listening on port ' + port)
+console.log('socket listening on port ' + port)
 
 httpServer.on('request', (request, response) => {
+  console.log("An HTTP request")
   response.writeHead(200, {'content-type': 'application/json'})
-  response.write(transact)
+  response.write(JSON.stringify(transact))
+  console.log(JSON.stringify(transact) + ' is sent')
   transact.do = false
   response.end()
 })
 
+console.log('http listening on port ' + httpPort)
 httpServer.listen({
   host: host,
   port: httpPort,
