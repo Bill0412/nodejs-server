@@ -1,12 +1,12 @@
 const net = require('net')
-
+const timer = require('timers')
 host = '0.0.0.0'
 port = 2222
 
 const server = net.createServer()
 
 let obj = ''
-let count = 0
+let isReady = false
 server.on('connection', (socket) => {
 
   console.log('connected')
@@ -20,16 +20,21 @@ server.on('connection', (socket) => {
     console.log(chunk + ' from ' + socket.remoteAddress + ':' + socket.remotePort)
     let str = chunk.toString()
     console.log("\n\nThe string is: " + str)
-    // initilize
-    if(str.search('done') !== -1){
-      if(count == 0){
-        socket.write("Initialization finished")
+
+    // initilize, to make sure that the door is closed
+    if(str.search('done') !== -1){  // The SoC says that it's ready
+      if(!isReady){
+        socket.write("Initialization finished\r")
         console.log("Initialization finished")
-        socket.write("open")  // request the client to open the door
-        count ++
-      } else if (count == 1) {
+        isReady = true
+        // temporarily send it after wating for 3 secs.
+        timer.setInterval(() => {
+          socket.write("open\r")
+        }, 3000);
+      } else  { // when the user closes the door
         console.log('The client door is closed after transaction')
-        socket.write("Transaction recorded in database.")
+        socket.write("Transaction recorded in database.\r")
+        isReady = false
       }
     }
 
