@@ -1,12 +1,12 @@
 const net = require('net')
 
-host = '0.0.0.0'
+host = '127.0.0.1'
 port = 2222
 
 const server = net.createServer()
 
-let obj
-
+let obj = ''
+let count = 0
 server.on('connection', (socket) => {
 
   console.log('connected')
@@ -18,7 +18,24 @@ server.on('connection', (socket) => {
 
   socket.on('data', (chunk) => {
     console.log(chunk + ' from ' + socket.remoteAddress + ':' + socket.remotePort)
-    socket.write('The data I received: ' + chunk)
+    let str = chunk.toString()
+    console.log("\n\nThe string is: " + str)
+    // initilize
+    if(str.search('done') !== -1){
+      if(count == 0){
+        socket.write("Initialization finished")
+        console.log("Initialization finished")
+        socket.write("open")  // request the client to open the door
+        count ++
+      } else if (count == 1) {
+        console.log('The client door is closed after transaction')
+        socket.write("Transaction recorded in database.")
+      }
+    }
+
+    // The door closed, transaction finished.
+
+    // initialize
   })
 
   socket.on('close', (had_error) =>{
@@ -37,9 +54,9 @@ server.on('connection', (socket) => {
     console.log('Socket Error: ' + err)
   })
 
+  socket.write('Conneted.')
   socket.pipe(socket)
-
-  socket.end(`I've received your data`)
+  // socket.end(`I've received your data`)
 })
 
 server.on('error', (err) => {
