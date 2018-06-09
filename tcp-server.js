@@ -1,12 +1,16 @@
 const net = require('net')
 const timer = require('timers')
+const http = require('http')  // to create an http server for WeChat App
+
 host = '0.0.0.0'
-port = 2222
+port = 2222   // just try if socket and http servers can coexist in the same port
 
 const server = net.createServer()
+const httpServer = http.createServer()
 
 let obj = ''
 let isReady = false
+let transact = {do: false}
 server.on('connection', (socket) => {
 
   console.log('connected')
@@ -28,13 +32,15 @@ server.on('connection', (socket) => {
         console.log("Initialization finished")
         isReady = true
         // temporarily send it after wating for 3 secs.
+        // later change it to receiving the Web API message from the Tecent Server(database api)
         timer.setInterval(() => {
           socket.write("open\r")
         }, 3000);
-      } else  { // when the user closes the door
+      } else  { // when the user closes the door, do transaction
         console.log('The client door is closed after transaction')
         socket.write("Transaction recorded in database.\r")
         isReady = false
+        transaction.do = true
       }
     }
 
@@ -75,7 +81,20 @@ server.on('close', () => {
 server.listen({
   host: host,
   port: port,
-  exclusive: true
+  exclusive: false
 })
 
 console.log('listening on port ' + port)
+
+httpServer.on('request', (request, response) => {
+  response.writeHead(200, {'content-type': 'application/json'})
+  response.write(transact)
+  transact.do = false
+  response.end()
+})
+
+httpServer.listen({
+  host: host,
+  port: port,
+  exclusive: false
+})
