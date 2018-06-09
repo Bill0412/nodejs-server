@@ -5,6 +5,8 @@ const http = require('http')  // to create an http server for WeChat App
 host = '0.0.0.0'
 port = 2222   // just try if socket and http servers can coexist in the same port
 
+httpPort = 3333
+
 const server = net.createServer()
 const httpServer = http.createServer()
 
@@ -81,7 +83,7 @@ server.on('close', () => {
 server.listen({
   host: host,
   port: port,
-  exclusive: false
+  exclusive: true
 })
 
 console.log('listening on port ' + port)
@@ -95,6 +97,6 @@ httpServer.on('request', (request, response) => {
 
 httpServer.listen({
   host: host,
-  port: port,
-  exclusive: false
+  port: httpPort,
+  exclusive: true
 })
