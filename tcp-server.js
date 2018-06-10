@@ -13,10 +13,11 @@ const httpServer = http.createServer()
 let obj = ''
 let isReady = false
 let transact = {do: false}
+let gSocket = null
 server.on('connection', (socket) => {
 
   console.log('connected')
-
+  gSocket = socket
 
   socket.on('connect', () => {
     console.log('A connection created with client: ' + socket.address)
@@ -90,7 +91,7 @@ httpServer.on('request', (request, response) => {
   request.on('data', function (chunk) {
     if(chunk.toString().search('open') != -1){
       console.log('Received open the door instruction from WeChat App')
-      socket.write("open\r")
+      gSocket.write("open\r")
       console.log('open is sent to the shelf')
     }
   })
