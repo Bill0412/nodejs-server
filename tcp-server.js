@@ -92,7 +92,7 @@ console.log('socket listening on port ' + port)
 
 httpServer.on('request', (request, response) => {
   request.on('data', function (chunk) {
-    chunk.find(search('open') != -1){
+    if(chunk.search('open') != -1){
       toOpenTheDoor = true;
       console.log('Received open the door instruction from WeChat App')
     }
