@@ -13,7 +13,6 @@ const httpServer = http.createServer()
 let obj = ''
 let isReady = false
 let transact = {do: false}
-let toOpenTheDoor = false;
 server.on('connection', (socket) => {
 
   console.log('connected')
@@ -36,10 +35,7 @@ server.on('connection', (socket) => {
         isReady = true
         // temporarily send it after wating for 3 secs.
         // later change it to receiving the Web API message from the Tecent Server(database api)
-        if(toOpenTheDoor){
-          socket.write("open\r")
-          toOpenTheDoor = false;
-        }
+
       } else  { // when the user closes the door, do transaction
         console.log('The client door is closed after transaction')
         socket.write("Transaction recorded in database.\r")
@@ -93,8 +89,9 @@ console.log('socket listening on port ' + port)
 httpServer.on('request', (request, response) => {
   request.on('data', function (chunk) {
     if(chunk.toString().search('open') != -1){
-      toOpenTheDoor = true;
       console.log('Received open the door instruction from WeChat App')
+      socket.write("open\r")
+      console.log('open is sent to the shelf')
     }
   })
   console.log("An HTTP request")
