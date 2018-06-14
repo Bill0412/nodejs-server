@@ -7,7 +7,7 @@ const timer = require('timers')
 // globals
 host = '0.0.0.0'  // public ip
 lowPort = 2222   // This is the port for the arm SoC
-highPort = 3333   // This is the port for wechat app
+highPort = 80   // This is the port for wechat app
 
 const lowServer = net.createServer()  // The low level server, for SoS
 const highServer = net.createServer()  // The high level server, for WeChat
