@@ -100,7 +100,6 @@ httpServer.on('request', (request, response) => {
   response.write(JSON.stringify(transact))
   console.log(JSON.stringify(transact) + ' is sent')
   transact.do = false
-  response.end()
 })
 
 console.log('http listening on port ' + httpPort)
