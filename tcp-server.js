@@ -9,7 +9,7 @@ httpPort = 3333
 
 const server = net.createServer()
 const httpServer = http.createServer()
-const wechatResponse = null
+let wechatResponse = null
 
 let obj = ''
 let isReady = false
