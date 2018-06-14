@@ -9,6 +9,7 @@ httpPort = 3333
 
 const server = net.createServer()
 const httpServer = http.createServer()
+const wechatResponse = null
 
 let obj = ''
 let isReady = false
@@ -42,6 +43,7 @@ server.on('connection', (socket) => {
         socket.write("Transaction recorded in database.\r")
         isReady = false
         transact.do = true
+        wechatResponse.write(JSON.stringify(transact))
       }
     }
 
@@ -87,6 +89,7 @@ server.listen({
 
 console.log('socket listening on port ' + port)
 
+
 httpServer.on('request', (request, response) => {
   request.on('data', function (chunk) {
     if(chunk.toString().search('open') != -1){
@@ -95,6 +98,7 @@ httpServer.on('request', (request, response) => {
       console.log('open is sent to the shelf')
     }
   })
+  wechatResponse = response
   console.log("An HTTP request")
   response.writeHead(200, {'content-type': 'application/json'})
   response.write(JSON.stringify(transact))
